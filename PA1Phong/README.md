@@ -1,1 +1,3 @@
-Phong shading model
+# Phong shading model
+## Usage
+> bash run_all.sh
