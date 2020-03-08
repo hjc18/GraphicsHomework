@@ -5,7 +5,6 @@
 #include <cstdlib>
 #include <utility>
 #include <sstream>
-#define DEBUG
 
 bool Mesh::intersect(const Ray &r, Hit &h, double tmin) {
 
@@ -22,17 +21,9 @@ bool Mesh::intersect(const Ray &r, Hit &h, double tmin) {
 }
 
 Mesh::Mesh(const char *filename, Material *material) : Object3D(material) {
-
-#ifdef DEBUG
-    std::ifstream f;
-    char path[20] = "../";
-    strcat(path, filename);
-    f.open(path);
-#else
     // Optional: Use tiny obj loader to replace this simple one.
     std::ifstream f;
     f.open(filename);
-#endif
     if (!f.is_open()) {
         std::cout << "Cannot open " << filename << "\n";
         return;
@@ -87,7 +78,6 @@ Mesh::Mesh(const char *filename, Material *material) : Object3D(material) {
         }
     }
     computeNormal();
-
     f.close();
 }
 

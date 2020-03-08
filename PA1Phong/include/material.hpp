@@ -28,7 +28,7 @@ public:
                    const Vector3f &dirToLight, const Vector3f &lightColor) {
         Vector3f Ref = (2 * Vector3f::dot(dirToLight, hit.getNormal()) * hit.getNormal()) - dirToLight;
         double cd = max(0, Vector3f::dot(dirToLight, hit.getNormal()));
-        double cs = mpow(max(0,  Vector3f::dot(Ref, -ray.getDirection())), shininess);
+        double cs = pow(max(0,  Vector3f::dot(Ref, -ray.getDirection())), shininess);
         return lightColor * (cd * diffuseColor + cs * specularColor);
     }
 
