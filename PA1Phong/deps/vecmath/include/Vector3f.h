@@ -127,11 +127,4 @@ inline std::ostream &operator<<(std::ostream &os, const Vector3f& v) {
 inline double max(double x, double y){
     return x > y ? x : y;
 }
-inline double mpow(double x, int exp){
-    double result = 1;
-    while(exp--){
-        result *= x;
-    }
-    return result;
-}
 #endif // VECTOR_3F_H

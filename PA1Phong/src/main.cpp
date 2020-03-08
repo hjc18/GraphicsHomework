@@ -13,7 +13,6 @@
 
 #include <string>
 
-#define DEBUG
 using namespace std;
 
 //debug
@@ -27,15 +26,9 @@ string scene_names[7] = { "../testcases/scene01_basic.txt",
 //debug
 
 int main(int argc, char *argv[]) {
-//    SceneParser* sp[7] = { NULL };
-//    for (int i = 0; i < 7; ++i) {
-//        sp[i] = new SceneParser(scene_names[i].c_str());
-//    }
-#ifndef DEBUG
     for (int argNum = 1; argNum < argc; ++argNum) {
         std::cout << "Argument " << argNum << " is: " << argv[argNum] << std::endl;
     }
-
     if (argc != 3) {
         cout << "Usage: ./bin/PA1 <input scene file> <output bmp file>" << endl;
         return 1;
@@ -46,9 +39,6 @@ int main(int argc, char *argv[]) {
     // TODO: Main RayCasting Logic
     // First, parse the scene using SceneParser.
     SceneParser sp(inputFile.c_str());
-#else
-    SceneParser sp(scene_names[0].c_str());
-#endif
     Camera* camera = sp.getCamera();
     Group* baseGroup = sp.getGroup();
     Image img(camera->getWidth(), camera->getHeight());
@@ -77,10 +67,7 @@ int main(int argc, char *argv[]) {
             }
         }
     }
-    img.SaveBMP("test7.bmp");
-#ifndef DEBUG
     img.SaveBMP(outputFile.c_str());
-#endif
     cout << "Hello! Computer Graphics!" << endl;
     return 0;
 }
