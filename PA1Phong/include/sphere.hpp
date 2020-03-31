@@ -23,14 +23,14 @@ public:
     ~Sphere() override = default;
 
     bool intersect(const Ray &r, Hit &h, double tmin) override {
-        //Ray.direction unit!
+        //Ray.direction unit？
         Vector3f o2center = center - r.getOrigin();
-        if(h.getT() < o2center.length() - radius) return false;//impossible, too far
-        double tmp = Vector3f::dot(o2center, r.getDirection());
+        //if(h.getT() < o2center.length() - radius) return false;//impossible, too far
+        double tmp = Vector3f::dot(o2center, r.getDirection()) / r.getDirection().length();
         if(tmp <= 0) return false;//angle between ray and center >= 90
         double dis = rtTriangle(tmp, o2center.length(), 1);
         if(dis > radius) return false;//no intersection
-        double tt = tmp - rtTriangle(dis, radius, 1);
+        double tt = (tmp - rtTriangle(dis, radius, 1)) / r.getDirection().length();
         if(tt > tmin && tt < h.getT()){
             h.set(tt, this->material, r.pointAtParameter(tt)-center);//normalize inside the function
             return true;

@@ -52,7 +52,7 @@ public:
         Vector3f d(x, y, 1);
         //transform
         Matrix3f rot(horizontal, up, direction);
-        d = rot * d;
+        d = (rot * d).normalized();
         return Ray(center, d);
     }
 

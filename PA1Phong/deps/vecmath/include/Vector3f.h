@@ -124,7 +124,4 @@ inline std::ostream &operator<<(std::ostream &os, const Vector3f& v) {
     os << "[" << v.x() << ", " << v.y() << ", " << v.z() << "]";
     return os;
 }
-inline double max(double x, double y){
-    return x > y ? x : y;
-}
 #endif // VECTOR_3F_H

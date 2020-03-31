@@ -22,7 +22,8 @@ public:
 	}
 
 	bool intersect( const Ray& r,  Hit& h , double tmin) override {
-	    double offset = Vector3f::dot(vertices[0], normal);
+        if(Vector3f::dot(normal, r.getDirection()) == 0) return false;
+        double offset = Vector3f::dot(vertices[0], normal);
         double tt = (offset - Vector3f::dot(normal, r.getOrigin())) / Vector3f::dot(normal, r.getDirection());
         Vector3f p = r.pointAtParameter(tt);
         for (int i = 0; i < 3; ++i) {
