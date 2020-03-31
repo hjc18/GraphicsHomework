@@ -26,9 +26,10 @@ public:
     std::vector<TriangleIndex> t;
     std::vector<Vector3f> n;
     bool intersect(const Ray &r, Hit &h, double tmin) override;
+    bool AABBTest(const Ray& r, const Hit &h, double tmin);
 
 private:
-
+    double AABB[6]; //x_max, x_min, y_max, y_min, z_max, z_min
     // Normal can be used for light estimation
     void computeNormal();
 };

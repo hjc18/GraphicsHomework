@@ -23,6 +23,7 @@ public:
     ~Plane() override = default;
 
     bool intersect(const Ray &r, Hit &h, double tmin) override {
+        if(Vector3f::dot(normal, r.getDirection()) == 0) return false;
         double tt = (offset - Vector3f::dot(normal, r.getOrigin())) / Vector3f::dot(normal, r.getDirection());
         if(tt > tmin && tt < h.getT()){
             h.set(tt, this->material, normal);

@@ -4,6 +4,7 @@
 #include <cstring>
 #include <cmath>
 #include <iostream>
+#include <ctime>
 
 #include "scene_parser.hpp"
 #include "image.hpp"
@@ -36,13 +37,14 @@ int main(int argc, char *argv[]) {
     string inputFile = argv[1];
     string outputFile = argv[2];  // only bmp is allowed.
 
-    // TODO: Main RayCasting Logic
+    clock_t start, end;
+    //start the clock
+    start = clock();
     // First, parse the scene using SceneParser.
     SceneParser sp(inputFile.c_str());
     Camera* camera = sp.getCamera();
     Group* baseGroup = sp.getGroup();
     Image img(camera->getWidth(), camera->getHeight());
-
     // Then loop over each pixel in the image, shooting a ray
     // through that pixel and finding its intersection with
     // the scene.  Write the color at the intersection to that
@@ -62,13 +64,13 @@ int main(int argc, char *argv[]) {
                 }
                 img.SetPixel(x, y, finalColor);
             }
-            else{
-                img.SetPixel(x, y, sp.getBackgroundColor());
-            }
+            else img.SetPixel(x, y, sp.getBackgroundColor());
         }
     }
     img.SaveBMP(outputFile.c_str());
-    cout << "Hello! Computer Graphics!" << endl;
+
+    end = clock();
+    cout << "Hello! Computer Graphics! <run time:" <<(double)(end - start) / CLOCKS_PER_SEC << "s>" << endl;
     return 0;
 }
 

@@ -5,11 +5,32 @@
 #include <cstdlib>
 #include <utility>
 #include <sstream>
-
+bool Mesh::AABBTest(const Ray &r, const Hit &h, double tmin) {
+    Vector3f o = r.getOrigin();
+    if(o[0] <= AABB[0] && o[0] >= AABB[1]
+    && o[1] <= AABB[2] && o[1] >= AABB[3]
+    && o[2] <= AABB[4] && o[2] >= AABB[5]) return true; //inside the box
+    double tttmax = (AABB[0] - o[0]) / r.getDirection()[0];
+    double tttmin = (AABB[1] - o[0]) / r.getDirection()[0];
+    if(tttmax < tttmin) swap(tttmax, tttmin);
+    double ttmax = tttmax;
+    double ttmin = tttmin;
+    tttmax = (AABB[2] - o[1]) / r.getDirection()[1];
+    tttmin = (AABB[3] - o[1]) / r.getDirection()[1];
+    if(tttmax < tttmin) swap(tttmax, tttmin);
+    ttmax = min(ttmax, tttmax);
+    ttmin = max(ttmin, tttmin);
+    tttmax = (AABB[4] - o[2]) / r.getDirection()[2];
+    tttmin = (AABB[5] - o[2]) / r.getDirection()[2];
+    if(tttmax < tttmin) swap(tttmax, tttmin);
+    ttmax = min(ttmax, tttmax);
+    ttmin = max(ttmin, tttmin);
+    return ttmax >= ttmin;
+}
 bool Mesh::intersect(const Ray &r, Hit &h, double tmin) {
-
     // Optional: Change this brute force method into a faster one.
     bool result = false;
+    if(!AABBTest(r, h, tmin)) return false;
     for (int triId = 0; triId < (int) t.size(); ++triId) {
         TriangleIndex& triIndex = t[triId];
         Triangle triangle(v[triIndex[0]],
@@ -51,6 +72,19 @@ Mesh::Mesh(const char *filename, Material *material) : Object3D(material) {
         if (tok == vTok) {
             Vector3f vec;
             ss >> vec[0] >> vec[1] >> vec[2];
+            if(v.empty()){
+                AABB[0] = AABB[1] = vec[0];
+                AABB[2] = AABB[3] = vec[1];
+                AABB[4] = AABB[5] = vec[2];
+            }
+            else {
+                if (vec[0] > AABB[0]) AABB[0] = vec[0];
+                else if (vec[0] < AABB[1]) AABB[1] = vec[0];
+                if (vec[1] > AABB[2]) AABB[2] = vec[1];
+                else if (vec[1] < AABB[3]) AABB[3] = vec[1];
+                if (vec[2] > AABB[4]) AABB[4] = vec[2];
+                else if (vec[2] < AABB[5]) AABB[5] = vec[2];
+            }
             v.push_back(vec);
         } else if (tok == fTok) {
             if (line.find(bslash) != std::string::npos) {
